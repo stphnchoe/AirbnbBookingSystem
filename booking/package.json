@@ -1,0 +1,35 @@
+{
+  "name": "booking-service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/The-Continuum/AirbnbBookingSystem.git"
+  },
+  "author": "Stephen Choe",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/The-Continuum/AirbnbBookingSystem/issues"
+  },
+  "homepage": "https://github.com/The-Continuum/AirbnbBookingSystem#readme",
+  "dependencies": {
+    "assert": "^1.4.1",
+    "cassandra-driver": "^3.3.0",
+    "eslint": "^4.16.0",
+    "faker": "^4.1.0",
+    "koa": "^2.4.1",
+    "koa-bodyparser": "^4.2.0",
+    "koa-middlewares": "^6.0.0",
+    "koa-router": "^7.3.0"
+  },
+  "devDependencies": {
+    "babel-plugin-transform-async-to-generator": "^6.24.1",
+    "babel-plugin-transform-async-to-module-method": "^6.24.1",
+    "babel-register": "^6.26.0"
+  }
+}
