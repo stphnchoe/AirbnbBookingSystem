@@ -1,0 +1,28 @@
+config:
+  target: "http://localhost:3000"
+  phases:
+    - duration: 90
+      arrivalRate: 20
+  payload:
+    path: "testdata1.csv"
+    fields:
+      - "listing_id"
+      - "reserve_date"
+      - "book_time"
+      - "book_user_id"
+      - "host_id"
+scenarios:
+  - name: "Book a reserve date"
+    flow:
+    - loop:
+      - post:
+          url: "/booking"
+          json: 
+            listing_id: "{{ listing_id }}"
+            reserve_date: "{{ reserve_date }}"
+            book_time: "{{ book_time}}"
+            book_user_id: "{{ book_user_id }}"
+            host_id: "{{ host_id }}"
+      - get:
+          url: "/booking/{{ listing_id }}"
+      count: 50
