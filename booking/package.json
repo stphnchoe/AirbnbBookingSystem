@@ -19,14 +19,15 @@
   "homepage": "https://github.com/The-Continuum/AirbnbBookingSystem#readme",
   "dependencies": {
     "assert": "^1.4.1",
+    "aws-sdk": "^2.190.0",
     "cassandra-driver": "^3.3.0",
     "eslint": "^4.16.0",
     "faker": "^4.1.0",
     "koa": "^2.4.1",
     "koa-bodyparser": "^4.2.0",
     "koa-middlewares": "^6.0.0",
-    "koa-newrelic": "^2.0.3",
     "koa-router": "^7.3.0",
+    "moment": "^2.20.1",
     "newrelic": "^2.7.0"
   },
   "devDependencies": {

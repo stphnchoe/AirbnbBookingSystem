@@ -1,5 +1,4 @@
 const cassandra = require('cassandra-driver');
-const uuid = require('uuid');
 const client = new cassandra.Client({ contactPoints: ["localhost"], keyspace: 'airbnb' });
 
 client.connect(err => {
@@ -15,7 +14,7 @@ client.connect(err => {
 //   });
 
 const listingBookDates = (params) => {
-  const query = 'SELECT * FROM booked WHERE listing_id = ?';
+  const query = 'SELECT reserve_date FROM booked WHERE listing_id = ?';
   return new Promise((resolve, reject) => {
     client.execute(query, params, {prepare: true})
       .then(result => resolve(result))
@@ -26,8 +25,8 @@ const listingBookDates = (params) => {
 const createBooking = (params) => {
   const query = 'INSERT INTO bookings (listing_id, reserve_date, book_time, book_user_id, host_id, id) VALUES (?, ?, ?, ?, ?, ?)';
   client.execute(query, params, {prepare: true})
-    .then(result => console.log(result))
-    .catch(err => console.error(err));
+    .then(result => console.log('Success', result))
+    .catch(err => console.error('Error', err));
 };
 
 module.exports = { 

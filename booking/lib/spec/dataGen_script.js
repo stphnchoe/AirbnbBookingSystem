@@ -94,7 +94,7 @@
 //     if (selectedDays.includes(daysArr[day])) {
 //       addData(selectedDays, daysArr, month, bookings);
 //     } else {
-//       var data = `${listing},2018-${month}-${daysArr[day]},${bookYear}-${monthsArr[randomIndex]}-${daysArr[day]},${uuid.v4()},${host}`;
+//       var data = `${listing},2018-${month}-${daysArr[day]},${Date.now()},${uuid.v4()},${host}`;
 //       writeStream.write(data + '\n', 'utf8');
 //       selectedDays.push(daysArr[day]);
 //       addData(selectedDays, daysArr, month, bookings);
