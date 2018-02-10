@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node server/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "nyc mocha lib/test/*.js"
   },
   "repository": {
     "type": "git",
@@ -18,7 +18,6 @@
   },
   "homepage": "https://github.com/The-Continuum/AirbnbBookingSystem#readme",
   "dependencies": {
-    "assert": "^1.4.1",
     "aws-sdk": "^2.190.0",
     "cassandra-driver": "^3.3.0",
     "eslint": "^4.16.0",
@@ -26,6 +25,7 @@
     "koa": "^2.4.1",
     "koa-bodyparser": "^4.2.0",
     "koa-middlewares": "^6.0.0",
+    "koa-newrelic": "^2.0.3",
     "koa-router": "^7.3.0",
     "moment": "^2.20.1",
     "newrelic": "^2.7.0"
@@ -33,6 +33,10 @@
   "devDependencies": {
     "babel-plugin-transform-async-to-generator": "^6.24.1",
     "babel-plugin-transform-async-to-module-method": "^6.24.1",
-    "babel-register": "^6.26.0"
+    "babel-register": "^6.26.0",
+    "chai": "^4.1.2",
+    "mocha": "^5.0.0",
+    "nyc": "^11.4.1",
+    "supertest-koa-agent": "^0.3.0"
   }
 }

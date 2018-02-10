@@ -25,4 +25,4 @@ scenarios:
             host_id: "{{ host_id }}"
       - get:
           url: "/booking/{{ listing_id }}"
-      count: 90
+      count: 100

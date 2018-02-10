@@ -2,15 +2,11 @@ const newrelic = require('newrelic');
 const Koa = require('koa');
 const Router = require('koa-router');
 const bodyParser = require('koa-bodyparser');
-const AWS = require('aws-sdk');
-const cassDB = require('../database/index.js');
+const koaNewrelic = require('koa-newrelic')(newrelic);
 const moment = require ('moment');
 const uuid = require('uuid');
-
-AWS.config.update({
-  region: 'us-west-1'
-})
-var sqs = new AWS.SQS();
+const cassDB = require('../database/index.js');
+const sqs = require('./sqs_sendMessage.js');
 
 const app = new Koa();
 const router = new Router();
@@ -23,51 +19,48 @@ app.use(bodyParser());
 
 //testing eeddef61-0878-11e8-9d64-f7887e6779f1
 router
-  .get('/', (ctx) => ctx.body = 'Hello World')
   .get('/booking/:listingid', async (ctx) => {
-    const params = ctx.params.listingid;
-    var bookedDates = await cassDB.listingBookDates([params]);
-    ctx.response.status = 200;
-    ctx.body = bookedDates.rows;
+    try {
+      const params = ctx.params.listingid;
+      var bookedDates = await cassDB.listingBookDates([params]);
+      ctx.status = 200;
+      ctx.body = bookedDates.rows;
+    } catch (err) {
+      ctx.status = err.status || 500;
+      ctx.body = err.message;
+      ctx.app.emit('error', err, ctx);
+    }
   })
   .post('/booking', async (ctx) => {
-    const body = ctx.request.body;
-    const book_time = moment(body.book_time).format()
-    const bookingInfo = [body.listing_id, body.reserve_date, book_time, body.book_user_id, body.host_id, uuid.v1()];
-    cassDB.createBooking(bookingInfo);
-    ctx.response.status = 201;
-
-    const inventoryMessage = {
-      MessageBody: JSON.stringify({
-        listing_id: ctx.request.body.listing_id,
-        book_time: book_time
-      }),
-      QueueUrl: "https://sqs.us-west-1.amazonaws.com/462015734403/fromBookings",
-    }
-    // const eventMessage = {
-    //   MessageBody: JSON.stringify({
-    //     listing_id: ctx.request.body.listing_id,
-    //     book_time: moment().format(),
-    //     book_user_id: ctx.request.body.book_user_id
-    //   }),
-    //   QueueUrl: "event queue url",
-    // }
-
-    sqs.sendMessage(inventoryMessage, function(err, data) {
-      if (err) {
-        console.log(err);
+    try {
+      const body = ctx.request.body;
+      const book_time = moment(Number(body.book_time)).format()
+      const id = uuid.v1();
+      const reserve_date = body.reserve_date;
+      if (reserve_date < moment(Date.now()).format()) {
+        throw new Error('Error: Cannot book a past date');
       } else {
-        console.log(data);
+        const bookingInfo = [body.listing_id, reserve_date, book_time, body.book_user_id, body.host_id, id];
+        var booked = await cassDB.createBooking(bookingInfo);
+        if (booked.rows[0]["[applied]"]) {
+        ctx.status = 201;
+        // sqs.sendMessage("https://sqs.us-west-1.amazonaws.com/462015734403/fromBookings", ctx.request.body.listing_id, book_time, id);
+        // sqs.sendMessage("https://sqs.us-west-1.amazonaws.com/608151570921/bookingQ", ctx.request.body.listing_id,  book_time, host_id);
+        ctx.body = booked;
+      } else {
+        ctx.status = 200;
+        ctx.body = 'The date has already been booked';
       }
-    });
-    // sqs.sendMessage(eventMessage, function(err, data) {
-    //   if (err) {
-    //     console.log(err);
-    //   } else {
-    //     console.log(data);
-    //   }
-    // });
-    ctx.body = 'Booking completed successfully!';
-  });
-
+    }
+  } catch (err) {
+    ctx.status = err.status || 500;
+    ctx.body = err.message;
+    ctx.app.emit('error', err, ctx);
+  }
+});
+app.use(koaNewrelic);
 app.use(router.routes());
+
+module.exports = {
+  app
+}

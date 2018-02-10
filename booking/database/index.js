@@ -23,10 +23,12 @@ const listingBookDates = (params) => {
 };
 
 const createBooking = (params) => {
-  const query = 'INSERT INTO bookings (listing_id, reserve_date, book_time, book_user_id, host_id, id) VALUES (?, ?, ?, ?, ?, ?)';
-  client.execute(query, params, {prepare: true})
-    .then(result => console.log('Success', result))
-    .catch(err => console.error('Error', err));
+  const query = 'INSERT INTO bookings (listing_id, reserve_date, book_time, book_user_id, host_id, id) VALUES (?, ?, ?, ?, ?, ?) IF NOT EXISTS';
+  return new Promise((resolve, reject) => {
+    client.execute(query, params, {prepare: true})
+      .then(result => resolve(result))
+      .catch(err => reject(err));
+  });
 };
 
 module.exports = { 

@@ -59,26 +59,23 @@
 /********************************************************************************************************************************************************************/
 
 // //Data GENERATION LOAD TESTING
-// var faker = require('faker');
 // var fs = require('fs');
-// const uuid = require('uuid');
+// // const uuid = require('uuid');
 
 // let writeStream = fs.createWriteStream('./database/testdata2.csv');
-// let writeUserStream = fs.createWriteStream('./database/testUsers2.csv');
 
 // //generate 500k listings
 // for (var i = 20000; i > 0; i--) {
 //   //host and listing tied together
 //   var host = uuid.v1();
 //   var listing = uuid.v1();
-
+//   var date = Date.now();
 //   var monthsArr = ['02', '03', '04'];
 //   var monthObj = {};
 //   var selectedDays = [];
 //   var month2 = [];
 //   var month3 = [];
 //   var bookYear = 2018;
-//   writeUserStream.write(host + '\n');
 //   monthObj[5] = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'];
 //   monthObj[6] = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29',  '30'];
 //   monthObj[7] = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'];
@@ -94,7 +91,7 @@
 //     if (selectedDays.includes(daysArr[day])) {
 //       addData(selectedDays, daysArr, month, bookings);
 //     } else {
-//       var data = `${listing},2018-${month}-${daysArr[day]},${Date.now()},${uuid.v4()},${host}`;
+//       var data = `${listing},2018-${month}-${daysArr[day]},${date+=1000},${uuid.v4()},${host}`;
 //       writeStream.write(data + '\n', 'utf8');
 //       selectedDays.push(daysArr[day]);
 //       addData(selectedDays, daysArr, month, bookings);
@@ -108,13 +105,8 @@
 //   addData(month3, monthObj[7], '07', 2);
 // }
 
-// writeUserStream.on('finish', () => {
-//   console.log('wrote all users to file');
-// })
-
 // writeStream.on('finish', () => {  
 //   console.log('wrote all data to file');
 // });
 
-// writeUserStream.end();
 // writeStream.end();
