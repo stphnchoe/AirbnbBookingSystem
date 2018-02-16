@@ -15,12 +15,14 @@ CREATE TABLE IF NOT EXISTS bookings (
     id uuid,
     PRIMARY KEY(listing_id, reserve_date)
 )
-WITH CLUSTERING ORDER BY (reserve_date DESC);
+WITH CLUSTERING ORDER BY (reserve_date DESC)
+AND compaction = { 'class' :  'LeveledCompactionStrategy' }
+AND compression = { 'class' :  'LZ4Compressor'  };
 
 CREATE MATERIALIZED VIEW booked 
 AS SELECT listing_id, reserve_date 
 FROM bookings
 WHERE listing_id IS NOT NULL AND reserve_date > toTimestamp(now())
-PRIMARY KEY (listing_id, reserve_date);
-
-CREATE INDEX IF NOT EXISTS reservedbookings ON bookings (reserve_date);
+PRIMARY KEY (listing_id, reserve_date)
+WITH compaction = { 'class' :  'LeveledCompactionStrategy'  }
+AND compression = { 'class' :  'LZ4Compressor'  };

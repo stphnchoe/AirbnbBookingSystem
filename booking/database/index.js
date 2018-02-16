@@ -8,13 +8,8 @@ client.connect(err => {
   console.log('Connected to cluster with %d host(s): %j', client.hosts.length, client.hosts.keys());
 });
 
-// client.execute(`CREATE TABLE IF NOT EXISTS bookingIN (id uuid PRIMARY KEY, book_time timestamp)`, (err) => {
-//     assert.ifError(err);
-//     console.log('failure');
-//   });
-
 const listingBookDates = (params) => {
-  const query = 'SELECT reserve_date FROM booked WHERE listing_id = ?';
+  const query = 'SELECT reserve_date FROM bookings WHERE listing_id = ?';
   return new Promise((resolve, reject) => {
     client.execute(query, params, {prepare: true})
       .then(result => resolve(result))

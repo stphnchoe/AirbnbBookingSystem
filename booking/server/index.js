@@ -17,7 +17,6 @@ console.log('connected to server');
 
 app.use(bodyParser());
 
-//testing eeddef61-0878-11e8-9d64-f7887e6779f1
 router
   .get('/booking/:listingid', async (ctx) => {
     try {
@@ -44,8 +43,8 @@ router
         var booked = await cassDB.createBooking(bookingInfo);
         if (booked.rows[0]["[applied]"]) {
         ctx.status = 201;
-        // sqs.sendMessage("https://sqs.us-west-1.amazonaws.com/462015734403/fromBookings", ctx.request.body.listing_id, book_time, id);
-        // sqs.sendMessage("https://sqs.us-west-1.amazonaws.com/608151570921/bookingQ", ctx.request.body.listing_id,  book_time, host_id);
+        sqs.sendMessage("https://sqs.us-west-1.amazonaws.com/462015734403/fromBookings", body.listing_id, book_time, id);
+        sqs.sendMessage("https://sqs.us-west-1.amazonaws.com/608151570921/bookingQ", body.listing_id,  book_time, id);
         ctx.body = booked;
       } else {
         ctx.status = 200;
@@ -61,6 +60,4 @@ router
 app.use(koaNewrelic);
 app.use(router.routes());
 
-module.exports = {
-  app
-}
+module.exports = app;

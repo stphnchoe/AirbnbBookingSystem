@@ -1,5 +1,8 @@
 const AWS = require('aws-sdk');
+const awsConfig = require('../etc/config.js');
 AWS.config.update({
+  accessKeyId: awsConfig.aws_access_key_id,
+  secretAccessKey: awsConfig.aws_secret_access_key,
   region: 'us-west-1'
 });
 

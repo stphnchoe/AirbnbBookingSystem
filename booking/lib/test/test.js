@@ -2,8 +2,8 @@ var mocha = require('mocha');
 var expect = require('chai').expect;
 var moment = require('moment');
 var agent = require('supertest-koa-agent');
-var server = require('../../server/index.js');
-var api = agent(server.app);
+var app = require('../../server/index.js');
+var api = agent(app);
 
 describe('User', () => {
   beforeEach(function(done) {
@@ -110,7 +110,7 @@ describe('User', () => {
       });
   });
 
-  it('should return the same number of booked dates for a listing id', function(done) {
+  it('should return an additional booked date for a listing id after POST /booking to a new reservation', function(done) {
     api.get('/booking/ac929980-ab00-4acd-98b0-a772be583be9')
       .set('Accept', 'application/json')
       .expect(200)

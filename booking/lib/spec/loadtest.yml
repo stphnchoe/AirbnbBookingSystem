@@ -1,10 +1,10 @@
 config:
-  target: "http://localhost:3000"
+  target: "http://54.215.132.212:3000"
   phases:
     - duration: 90
       arrivalRate: 10
   payload:
-    path: "testdata1.csv"
+    path: "testdata5.csv"
     fields:
       - "listing_id"
       - "reserve_date"
