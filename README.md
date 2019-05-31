@@ -6,7 +6,7 @@ The booking microservice serves reserved dates for a specific listing so that cl
 
 ## Booking Microservice Architecture
 
-View the booking microservice design [here](https://s3.amazonaws.com/poly-screenshots.angel.co/Project/0e/797629/382e2f362d17260ee35c9e012bd03f97-original.png)
+![alt text](https://s3.amazonaws.com/poly-screenshots.angel.co/Project/0e/797629/382e2f362d17260ee35c9e012bd03f97-original.png "Mock Airbnb Booking System Architecture")
 
 ## Contributing
 
